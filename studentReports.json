@@ -1,0 +1,93 @@
+[
+    {
+        "amber@gmail.com": {
+            "displayName": "Amber",
+            "Major": "Computer Science",
+            "Course": "Advanced Algorithm",
+            "Enrollment Date": "03/01/2025",
+            "Grades": {
+                "Midterm1": 90,
+                "Midterm2": 100,
+                "FinalExam": 97
+            }
+        }
+    },
+    {
+        "amber@gmail.com": {
+            "displayName": "Amber",
+            "Major": "Computer Science",
+            "Course": "Advanced Databases",
+            "Enrollment Date": "03/01/2025",
+            "Grades": {
+                "Midterm1": 90,
+                "Midterm2": 100,
+                "FinalExam": 97
+            }
+        }
+    },
+    {
+        "amber@gmail.com": {
+            "displayName": "Amber",
+            "Major": "Computer Science",
+            "Course": "Artifical Intelligence",
+            "Enrollment Date": "03/01/2025",
+            "Grades": {
+                "Midterm1": 90,
+                "Midterm2": 100,
+                "FinalExam": 97
+            }
+        }
+    },
+    {
+        "amber@gmail.com": {
+            "displayName": "Amber",
+            "Major": "Computer Engineering",
+            "Course": "Machine Learning",
+            "Enrollment Date": "03/01/2025",
+            "Grades": {
+                "Midterm1": 90,
+                "Midterm2": 100,
+                "FinalExam": 97
+            }
+        }
+    },
+    {
+        "amber@gmail.com": {
+            "displayName": "Amber",
+            "Major": "Computer Science",
+            "Course": "Advanced Operating Systems",
+            "Enrollment Date": "03/02/2025",
+            "Grades": {
+                "Midterm1": 89,
+                "Midterm2": 92,
+                "FinalExam": 91
+            }
+        }
+    },
+    {
+        "rahulkumar@gmail.com": {
+            "displayName": "Rahul Kumar",
+            "Major": "Data Science",
+            "Course": "Statistical Analysis",
+            "Enrollment Date": "02/20/2025",
+            "Grades": {
+                "Midterm1": 85,
+                "Midterm2": 88,
+                "FinalExam": 92
+            }
+        }
+    },
+    {
+        "priyapatel_nn@gmail.com": {
+            "displayName": "Priya Patel",
+            "Major": "Artificial Intelligence",
+            "Course": "Neural Networks",
+            "Enrollment Date": "02/10/2025",
+            "Grades": {
+                "Midterm1": 92,
+                "Midterm2": 95,
+                "FinalExam": 98
+            }
+        }
+    }
+]
