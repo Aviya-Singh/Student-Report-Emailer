@@ -1,7 +1,7 @@
 {
     "smtp_server": "smtp.gmail.com",
     "smtp_port": 465,
-    "sender_email": "sender_email",
-    "sender_password": "16-code-sender-password",
+    "sender_email": "techtonicwave10@gmail.com",
+    "sender_password": "rtlowhazkkgwvjbu",
     "use_tls": false
   }

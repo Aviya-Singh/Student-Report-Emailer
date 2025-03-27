@@ -25,72 +25,45 @@ class StudentReportEmailSender:
 
     def generate_email_html(self, student_data):
         """
-        Create HTML content for email body
+        Create HTML content for email body using email_template.html.
         """
-        # HTML template with inline styles
-        html_content = f"""
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <style>
-                body {{ font-family: Arial, sans-serif; margin: 0; padding: 20px; }}
-                h1 {{ color: black; font-weight: bold; text-align: center; }}
-                table {{
-                    width: 100%;
-                    border-collapse: collapse;
-                    margin-top: 20px;
-                }}
-                th, td {{
-                    border: 1px solid #ddd;
-                    padding: 8px;
-                    text-align: left;
-                    white-space: nowrap;
-                }}
-                th {{
-                    background-color: #f2f2f2;
-                    color: black;
-                    text-transform: uppercase;
-                }}
-                th:nth-child(1), td:nth-child(1),
-                th:nth-child(2), td:nth-child(2),
-                th:nth-child(3), td:nth-child(3),
-                th:nth-child(4), td:nth-child(4) {{ width: 25%; }}
-            </style>
-        </head>
-        <body>
-            <h1>{student_data['displayName']} - Student Report</h1>
-            <table>
+        # Read the HTML template from file
+        with open('email_template.html', 'r') as template_file:
+            html_template = template_file.read()
+
+        course_table_template = """
+            <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
                 <tr>
-                    <th>Course</th>
-                    <th>Major</th>
-                    <th>Enrollment Date</th>
-                    <th>Grades</th>
+                    <td style="font-family: Arial, sans-serif; font-size: 16px; padding: 10px; border: 1px solid #005ccc; text-align: left; background-color: #4887dd; color: #fff; width: 150px;">Course:</td>
+                    <td style="font-family: Arial, sans-serif; font-size: 16px; padding: 10px; border: 1px solid #005ccc; text-align: left; background-color: #f0f0f0;">{course_name}</td>
                 </tr>
-        """
-
-        # Add course details to HTML
-        for course in student_data.get('courses', [student_data]):
-            # Format grades
-            grades_str = "<br>".join([
-                f"{key}: {value}" for key, value in course['Grades'].items()
-            ])
-
-            html_content += f"""
                 <tr>
-                    <td>{course['Course']}</td>
-                    <td>{course['Major']}</td>
-                    <td>{course['Enrollment Date']}</td>
-                    <td>{grades_str}</td>
+                    <td style="font-family: Arial, sans-serif; font-size: 16px; padding: 10px; border: 1px solid #005ccc; text-align: left; background-color: #4887dd; color: #fff; width: 150px;">Major:</td>
+                    <td style="font-family: Arial, sans-serif; font-size: 16px; padding: 10px; border: 1px solid #005ccc; text-align: left; background-color: #f0f0f0;">{major}</td>
                 </tr>
-            """
-
-        # Close HTML tags
-        html_content += """
+                <tr>
+                    <td style="font-family: Arial, sans-serif; font-size: 16px; padding: 10px; border: 1px solid #005ccc; text-align: left; background-color: #4887dd; color: #fff; width: 150px;">Enrollment Date:</td>
+                    <td style="font-family: Arial, sans-serif; font-size: 16px; padding: 10px; border: 1px solid #005ccc; text-align: left; background-color: #f0f0f0;">{enrollment_date}</td>
+                </tr>
+                <tr>
+                    <td style="font-family: Arial, sans-serif; font-size: 16px; padding: 10px; border: 1px solid #005ccc; text-align: left; background-color: #4887dd; color: #fff; width: 150px;">Grades:</td>
+                    <td style="font-family: Arial, sans-serif; font-size: 16px; padding: 10px; border: 1px solid #005ccc; text-align: left; background-color: #f0f0f0;">{grades}</td>
+                </tr>
             </table>
-        </body>
-        </html>
         """
 
+        courses_tables = ""
+
+        for course in student_data.get('courses', [student_data]):
+            grades_str = "<br>".join([f"{key} : {value}" for key, value in course['Grades'].items()])
+            courses_tables += course_table_template.format(
+                course_name=course['Course'],
+                major=course['Major'],
+                enrollment_date=course['Enrollment Date'],
+                grades=grades_str
+            )
+
+        html_content = html_template.format(student_name=student_data['displayName'], courses_tables=courses_tables)
         return html_content
 
     def consolidate_reports(self):
@@ -115,7 +88,7 @@ class StudentReportEmailSender:
 
     def send_report_emails(self):
         """
-        Send emails with HTML reports to each student
+        Send emails with HTML reports to each student using template.
         """
         # Email sending configuration
         smtp_server = self.config['smtp_server']
@@ -129,15 +102,8 @@ class StudentReportEmailSender:
         # Iterate through unique emails in the reports
         for email, student_data in consolidated_reports.items():
             try:
-                # Generate HTML content
+                # Generate HTML content using template
                 html_content = self.generate_email_html(student_data)
-
-                # Create a unique filename
-                filename = f"{student_data['displayName'].replace(' ', '_')}_report.html"
-
-                # Save HTML to file
-                with open(filename, 'w') as f:
-                    f.write(html_content)
 
                 # Create multipart message
                 message = MIMEMultipart('alternative')
@@ -156,17 +122,8 @@ class StudentReportEmailSender:
 
                 logging.info(f"Email sent successfully to {email}")
 
-                # Delete HTML file
-                os.remove(filename)
-                logging.info(f"Deleted HTML file: {filename}")
-
             except Exception as e:
                 logging.error(f"Failed to send email to {email}. Error: {str(e)}")
-                try:
-                    os.remove(filename) # attempt to delete file even if email fails.
-                    logging.info(f"Deleted HTML file: {filename}")
-                except:
-                    pass
 
 def main():
     # Create email sender and send reports
